@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - github.com/kubeflow/manifests/apps/pipeline/upstream/env/platform-agnostic-multi-user?ref=v1.8.0
+
+images:
+  - name: gcr.io/ml-pipeline/minio
+    newName: minio/minio
+    newTag: latest

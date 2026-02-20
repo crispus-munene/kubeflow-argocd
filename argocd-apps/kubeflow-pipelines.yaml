@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/kubeflow/manifests.git
-    targetRevision: v1.8.0
-    path: apps/pipeline/upstream/env/platform-agnostic-multi-user
+    repoURL: https://github.com/crispus-munene/kubeflow-argocd.git
+    targetRevision: main
+    path: omponents/kubeflow-pipelines
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
