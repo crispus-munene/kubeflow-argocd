@@ -6,9 +6,10 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/crispus-munene/kubeflow-argocd.git
-    targetRevision: HEAD
-    path: kubeflow-pipelines
+    # Point directly at the official KFP repo and path — no local kustomization needed
+    repoURL: https://github.com/kubeflow/pipelines
+    targetRevision: 2.2.0
+    path: manifests/kustomize/env/platform-agnostic-pns
   destination:
     server: https://kubernetes.default.svc
     namespace: kubeflow
