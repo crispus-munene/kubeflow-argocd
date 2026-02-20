@@ -7,11 +7,15 @@ spec:
   project: default
   source:
     repoURL: https://github.com/crispus-munene/kubeflow-argocd.git
-    targetRevision: main
-    path: components/kubeflow-pipelines
+    targetRevision: HEAD
+    path: kubeflow-pipelines
   destination:
     server: https://kubernetes.default.svc
+    namespace: kubeflow
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true   # Required for Kubeflow's large manifests

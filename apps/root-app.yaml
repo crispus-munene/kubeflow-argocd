@@ -1,18 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: root-app
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "-2"
 spec:
   project: default
   source:
-    repoURL: https://github.com/kubeflow/manifests.git
-    targetRevision: v1.8.0
-    path: common/cert-manager/cert-manager/base
+    repoURL: https://github.com/crispus-munene/kubeflow-argocd.git
+    targetRevision: HEAD
+    path: apps/child-apps   # ArgoCD will watch this folder for child apps
   destination:
     server: https://kubernetes.default.svc
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
