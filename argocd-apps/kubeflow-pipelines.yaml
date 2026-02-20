@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/crispus-munene/kubeflow-argocd.git
     targetRevision: main
-    path: omponents/kubeflow-pipelines
+    path: components/kubeflow-pipelines
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
