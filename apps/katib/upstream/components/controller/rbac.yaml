@@ -50,6 +50,16 @@ rules:
     verbs:
       - "get"
   - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+      - "patch"
+      - "update"
+  - apiGroups:
       - apps
     resources:
       - deployments
@@ -81,13 +91,30 @@ rules:
       - "create"
       - "delete"
   - apiGroups:
+      - jobset.x-k8s.io
+    resources:
+      - jobsets
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+  - apiGroups:
+      - trainer.kubeflow.org
+    resources:
+      - trainjobs
+    verbs:
+      - "create"
+      - "get"
+      - "list"
+      - "watch"
+      - "delete"
+  - apiGroups:
       - kubeflow.org
     resources:
       - tfjobs
       - pytorchjobs
       - mpijobs
       - xgboostjobs
-      - mxjobs
     verbs:
       - "get"
       - "list"
@@ -108,6 +135,17 @@ rules:
       - suggestions/finalizers
     verbs:
       - "*"
+  - apiGroups:
+      - admissionregistration.k8s.io
+    resources:
+      - validatingwebhookconfigurations
+      - mutatingwebhookconfigurations
+    verbs:
+      - "get"
+      - "watch"
+      - "list"
+      - "patch"
+      - "update"
 ---
 apiVersion: v1
 kind: ServiceAccount

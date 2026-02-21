@@ -6,9 +6,12 @@ spec:
   replicas: 1
   template:
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: tensorboards-web-app
-        image: docker.io/kubeflownotebookswg/tensorboards-web-app
+        image: ghcr.io/kubeflow/kubeflow/tensorboards-web-app
         ports:
         - containerPort: 5000
         env:
@@ -20,4 +23,13 @@ spec:
           value: $(TWA_USERID_PREFIX)
         - name: APP_SECURE_COOKIES
           value: $(TWA_APP_SECURE_COOKIES)
+        - name: METRICS
+          value: $(TWA_APP_ENABLE_METRICS)
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
       serviceAccountName: service-account

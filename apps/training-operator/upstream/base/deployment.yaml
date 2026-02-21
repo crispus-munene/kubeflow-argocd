@@ -13,16 +13,21 @@ spec:
     metadata:
       labels:
         control-plane: kubeflow-training-operator
-      annotations:
         sidecar.istio.io/inject: "false"
     spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - command:
             - /manager
-          image: kubeflow/training-operator
+          image: ghcr.io/kubeflow/training-v1/training-operator
           name: training-operator
           ports:
             - containerPort: 8080
+            - containerPort: 9443
+              name: webhook-server
+              protocol: TCP
           env:
             - name: MY_POD_NAMESPACE
               valueFrom:
@@ -34,6 +39,15 @@ spec:
                   fieldPath: metadata.name
           securityContext:
             allowPrivilegeEscalation: false
+            runAsUser: 1000
+            runAsNonRoot: true
+            capabilities:
+              drop:
+              - ALL
+          volumeMounts:
+            - mountPath: /tmp/k8s-webhook-server/serving-certs
+              name: cert
+              readOnly: true
           livenessProbe:
             httpGet:
               path: /healthz
@@ -50,3 +64,8 @@ spec:
             timeoutSeconds: 3
       serviceAccountName: training-operator
       terminationGracePeriodSeconds: 10
+      volumes:
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: training-operator-webhook-cert

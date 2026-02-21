@@ -4,8 +4,7 @@ metadata:
   name: imc-controller
   namespace: knative-eventing
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -13,8 +12,7 @@ kind: ClusterRoleBinding
 metadata:
   name: imc-controller
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 subjects:
   - kind: ServiceAccount
@@ -31,8 +29,7 @@ metadata:
   namespace: knative-eventing
   name: imc-controller
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 subjects:
   - kind: ServiceAccount
@@ -48,8 +45,7 @@ kind: ClusterRoleBinding
 metadata:
   name: imc-controller-resolver
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 subjects:
   - kind: ServiceAccount
@@ -66,8 +62,7 @@ metadata:
   name: imc-dispatcher
   namespace: knative-eventing
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -75,8 +70,7 @@ kind: ClusterRoleBinding
 metadata:
   name: imc-dispatcher
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 subjects:
   - kind: ServiceAccount
@@ -87,15 +81,43 @@ roleRef:
   name: imc-dispatcher
   apiGroup: rbac.authorization.k8s.io
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: imc-dispatcher-tls-role-binding
+  namespace: knative-eventing
+subjects:
+  - kind: ServiceAccount
+    name: imc-dispatcher
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: imc-dispatcher-tls-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: imc-dispatcher-tls-role
+  namespace: knative-eventing
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-imc-event-dispatcher
   namespace: knative-eventing
   labels:
-    eventing.knative.dev/release: "v1.8.1"
     app.kubernetes.io/component: imc-controller
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 data:
   MaxIdleConnections: "1000"
@@ -107,11 +129,11 @@ metadata:
   name: imc-controller
   namespace: knative-eventing
   labels:
-    eventing.knative.dev/release: "v1.8.1"
     knative.dev/high-availability: "true"
     app.kubernetes.io/component: imc-controller
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
+    bindings.knative.dev/exclude: "true"
 spec:
   selector:
     matchLabels:
@@ -123,7 +145,7 @@ spec:
         messaging.knative.dev/channel: in-memory-channel
         messaging.knative.dev/role: controller
         app.kubernetes.io/component: imc-controller
-        app.kubernetes.io/version: "1.8.1"
+        app.kubernetes.io/version: "1.20.0"
         app.kubernetes.io/name: knative-eventing
     spec:
       affinity:
@@ -140,7 +162,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: controller
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_controller@sha256:f40825f7b4384ba8baac90018c42e4fd8aa2e37ad7a9e1c00c8858b73ed8d987
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_controller@sha256:2c43d1afb0b1c805a805373cfc42d903c8ce940ab72f29f32feaccdc565deb37
           env:
             - name: WEBHOOK_NAME
               value: inmemorychannel-webhook
@@ -157,7 +179,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: DISPATCHER_IMAGE
-              value: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher@sha256:eef625176c57aab4c3061428b787f844529dfd19b82cf50ccaffc909072d568f
+              value: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher@sha256:fd95f04b6b808d18c14fe122ba9671ae2b7f0c8c54487844feb9928f2784b324
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -202,9 +224,8 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: imc-controller
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
-    eventing.knative.dev/release: "v1.8.1"
   name: inmemorychannel-webhook
   namespace: knative-eventing
 spec:
@@ -228,11 +249,10 @@ metadata:
   name: imc-dispatcher
   namespace: knative-eventing
   labels:
-    eventing.knative.dev/release: "v1.8.1"
     messaging.knative.dev/channel: in-memory-channel
     messaging.knative.dev/role: dispatcher
     app.kubernetes.io/component: imc-dispatcher
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 spec:
   selector:
@@ -243,6 +263,10 @@ spec:
       port: 80
       protocol: TCP
       targetPort: 8080
+    - name: https-dispatcher
+      port: 443
+      protocol: TCP
+      targetPort: 8443
     - name: http-metrics
       port: 9090
       targetPort: 9090
@@ -253,11 +277,11 @@ metadata:
   name: imc-dispatcher
   namespace: knative-eventing
   labels:
-    eventing.knative.dev/release: "v1.8.1"
     knative.dev/high-availability: "true"
     app.kubernetes.io/component: imc-dispatcher
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
+    bindings.knative.dev/exclude: "true"
 spec:
   selector:
     matchLabels:
@@ -269,7 +293,7 @@ spec:
         messaging.knative.dev/channel: in-memory-channel
         messaging.knative.dev/role: dispatcher
         app.kubernetes.io/component: imc-dispatcher
-        app.kubernetes.io/version: "1.8.1"
+        app.kubernetes.io/version: "1.20.0"
         app.kubernetes.io/name: knative-eventing
     spec:
       affinity:
@@ -286,7 +310,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: dispatcher
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher@sha256:eef625176c57aab4c3061428b787f844529dfd19b82cf50ccaffc909072d568f
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher@sha256:fd95f04b6b808d18c14fe122ba9671ae2b7f0c8c54487844feb9928f2784b324
           readinessProbe:
             failureThreshold: 3
             httpGet:
@@ -331,6 +355,9 @@ spec:
             - containerPort: 8080
               name: http
               protocol: TCP
+            - containerPort: 8443
+              name: https
+              protocol: TCP
             - containerPort: 9090
               name: metrics
           securityContext:
@@ -348,11 +375,10 @@ kind: CustomResourceDefinition
 metadata:
   name: inmemorychannels.messaging.knative.dev
   labels:
-    eventing.knative.dev/release: "v1.8.1"
     knative.dev/crd-install: "true"
     messaging.knative.dev/subscribable: "true"
     duck.knative.dev/addressable: "true"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 spec:
   group: messaging.knative.dev
@@ -404,6 +430,12 @@ spec:
                         uri:
                           description: URI can be an absolute URL(non-empty scheme and non-empty host) pointing to the target or a relative URI. Relative URIs will be resolved using the base URI retrieved from Ref.
                           type: string
+                        CACerts:
+                          description: Certification Authority (CA) certificates in PEM format that the source trusts when sending events to the sink.
+                          type: string
+                        audience:
+                          description: Audience is the OIDC audience. This only needs to be set if the target is not an Addressable and thus the Audience can't be received from the target itself. If specified, it takes precedence over the target's Audience.
+                          type: string
                     retry:
                       description: Retry is the minimum number of retries the sender should attempt when sending an event before moving it to the dead letter sink.
                       type: integer
@@ -448,6 +480,12 @@ spec:
                               uri:
                                 description: URI can be an absolute URL(non-empty scheme and non-empty host) pointing to the target or a relative URI. Relative URIs will be resolved using the base URI retrieved from Ref.
                                 type: string
+                              CACerts:
+                                description: Certification Authority (CA) certificates in PEM format that the source trusts when sending events to the sink.
+                                type: string
+                              audience:
+                                description: Audience is the OIDC audience. This only needs to be set if the target is not an Addressable and thus the Audience can't be received from the target itself. If specified, it takes precedence over the target's Audience.
+                                type: string
                           retry:
                             description: Retry is the minimum number of retries the sender should attempt when sending an event before moving it to the dead letter sink.
                             type: integer
@@ -457,28 +495,91 @@ spec:
                         description: Generation of the origin of the subscriber with uid:UID.
                         type: integer
                         format: int64
+                      name:
+                        description: The name of the subscription
+                        type: string
+                      namespace:
+                        description: The namespace of the subscription
+                        type: string
                       replyUri:
                         description: ReplyURI is the endpoint for the reply
+                        type: string
+                      replyCACerts:
+                        description: Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.
+                        type: string
+                      replyAudience:
+                        description: ReplyAudience is the OIDC audience for the replyUri.
                         type: string
                       subscriberUri:
                         description: SubscriberURI is the endpoint for the subscriber
                         type: string
+                      subscriberCACerts:
+                        description: Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.
+                        type: string
+                      subscriberAudience:
+                        description: SubscriberAudience is the OIDC audience for the subscriberUri.
+                        type: string
                       uid:
                         description: UID is used to understand the origin of the subscriber.
                         type: string
+                      auth:
+                        description: Auth provides the relevant information for OIDC authentication.
+                        type: object
+                        properties:
+                          serviceAccountName:
+                            description: ServiceAccountName is the name of the generated service account used for this components OIDC authentication.
+                            type: string
+                          serviceAccountNames:
+                            description: ServiceAccountNames is the list of names of the generated service accounts used for this components OIDC authentication.
+                            type: array
+                            items:
+                              type: string
             status:
               description: Status represents the current state of the Channel. This data may be out of date.
               type: object
               properties:
                 address:
+                  description: InMemoryChannel is Addressable. It exposes the endpoint as an URI to get events delivered into the channel mesh.
                   type: object
                   properties:
+                    name:
+                      type: string
                     url:
                       type: string
+                    CACerts:
+                      type: string
+                    audience:
+                      type: string
+                addresses:
+                  description: InMemoryChannel is Addressable. It exposes the endpoints as URIs to get events delivered into the channel mesh.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      url:
+                        type: string
+                      CACerts:
+                        type: string
+                      audience:
+                        type: string
                 annotations:
                   description: Annotations is additional Status fields for the Resource to save some additional State as well as convey more information to the user. This is roughly akin to Annotations on any k8s resource, just the reconciler conveying richer information outwards.
                   type: object
                   x-kubernetes-preserve-unknown-fields: true
+                policies:
+                  description: List of applied EventPolicies
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      apiVersion:
+                        description: The API version of the applied EventPolicy. This indicates, which version of EventPolicy is supported by the resource.
+                        type: string
+                      name:
+                        description: The name of the applied EventPolicy
+                        type: string
                 conditions:
                   description: Conditions the latest available observations of a resource's current state.
                   type: array
@@ -525,6 +626,12 @@ spec:
                 deadLetterSinkUri:
                   description: DeadLetterSinkURI is the resolved URI of the dead letter ref if one is specified in the Spec.Delivery.
                   type: string
+                deadLetterSinkCACerts:
+                  description: Certification Authority (CA) certificates in PEM format according to https://www.rfc-editor.org/rfc/rfc7468.
+                  type: string
+                deadLetterSinkAudience:
+                  description: OIDC audience of the dead letter sink.
+                  type: string
                 observedGeneration:
                   description: ObservedGeneration is the 'Generation' of the Service that was last processed by the controller.
                   type: integer
@@ -548,6 +655,18 @@ spec:
                       uid:
                         description: UID is used to understand the origin of the subscriber.
                         type: string
+                      auth:
+                        description: Auth provides the relevant information for OIDC authentication.
+                        type: object
+                        properties:
+                          serviceAccountName:
+                            description: ServiceAccountName is the name of the generated service account used for this components OIDC authentication.
+                            type: string
+                          serviceAccountNames:
+                            description: ServiceAccountNames is the list of names of the generated service accounts used for this components OIDC authentication.
+                            type: array
+                            items:
+                              type: string
       additionalPrinterColumns:
         - name: URL
           type: string
@@ -579,9 +698,8 @@ kind: ClusterRole
 metadata:
   name: imc-addressable-resolver
   labels:
-    eventing.knative.dev/release: "v1.8.1"
     duck.knative.dev/addressable: "true"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 rules:
   - apiGroups:
@@ -599,9 +717,8 @@ kind: ClusterRole
 metadata:
   name: imc-channelable-manipulator
   labels:
-    eventing.knative.dev/release: "v1.8.1"
     duck.knative.dev/channelable: "true"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 rules:
   - apiGroups:
@@ -623,8 +740,7 @@ kind: ClusterRole
 metadata:
   name: imc-controller
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 rules:
   - apiGroups:
@@ -637,6 +753,7 @@ rules:
       - list
       - watch
       - update
+      - knsubscribe
   - apiGroups:
       - messaging.knative.dev
     resources:
@@ -651,6 +768,14 @@ rules:
       - inmemorychannels
     verbs:
       - patch
+  - apiGroups:
+      - eventing.knative.dev
+    resources:
+      - eventpolicies
+    verbs:
+      - get
+      - list
+      - watch
   - apiGroups:
       - ""
     resources:
@@ -761,10 +886,25 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  name: imc-subscriber
+  labels:
+    duck.knative.dev/crossnamespace-subscribable: "true"
+    app.kubernetes.io/version: "1.20.0"
+    app.kubernetes.io/name: knative-eventing
+rules:
+  - apiGroups:
+      - messaging.knative.dev
+    resources:
+      - inmemorychannels
+    verbs:
+      - knsubscribe
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
   name: imc-dispatcher
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 rules:
   - apiGroups:
@@ -792,6 +932,12 @@ rules:
       - create
       - patch
   - apiGroups:
+      - ""
+    resources:
+      - "serviceaccounts/token"
+    verbs:
+      - create
+  - apiGroups:
       - messaging.knative.dev
     resources:
       - inmemorychannels/finalizers
@@ -810,6 +956,21 @@ rules:
       - create
       - update
       - patch
+  - apiGroups:
+      - eventing.knative.dev
+    resources:
+      - eventtypes
+      - eventpolicies
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - eventing.knative.dev
+    resources:
+      - eventtypes
+    verbs:
+      - create
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -817,8 +978,7 @@ metadata:
   namespace: knative-eventing
   name: knative-inmemorychannel-webhook
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 rules:
   - apiGroups:
@@ -838,8 +998,7 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: inmemorychannel.eventing.knative.dev
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 webhooks:
   - admissionReviewVersions: ["v1"]
@@ -857,8 +1016,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: validation.inmemorychannel.eventing.knative.dev
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 webhooks:
   - admissionReviewVersions: ["v1"]
@@ -877,8 +1035,7 @@ metadata:
   name: inmemorychannel-webhook-certs
   namespace: knative-eventing
   labels:
-    eventing.knative.dev/release: "v1.8.1"
-    app.kubernetes.io/version: "1.8.1"
+    app.kubernetes.io/version: "1.20.0"
     app.kubernetes.io/name: knative-eventing
 ---
 

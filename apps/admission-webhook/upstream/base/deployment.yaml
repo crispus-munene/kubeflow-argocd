@@ -5,11 +5,11 @@ metadata:
 spec:
   template:
     metadata:
-      annotations:
+      labels:
         sidecar.istio.io/inject: "false"
     spec:
       containers:
-      - image: docker.io/kubeflownotebookswg/poddefaults-webhook
+      - image: ghcr.io/kubeflow/kubeflow/poddefaults-webhook
         name: admission-webhook
         volumeMounts:
         - mountPath: /etc/webhook/certs
@@ -18,6 +18,15 @@ spec:
         ports:
         - name: https-webhook
           containerPort: 4443
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          runAsUser: 65532
+          seccompProfile:
+            type: RuntimeDefault
+          capabilities:
+            drop:
+            - ALL
       volumes:
       - name: webhook-cert
         secret:
