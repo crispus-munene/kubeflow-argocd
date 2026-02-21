@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: oidc-authservice
+  name: oauth2-proxy
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/crispus-munene/kubeflow-argocd.git
     targetRevision: main
-    path: common/oidc-authservice
+    path: common/oauth2-proxy
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
