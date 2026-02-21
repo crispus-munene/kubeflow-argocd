@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/crispus-munene/kubeflow-argocd.git
     targetRevision: main
-    path: apps/pipeline/upstream/env/platform-agnostic-multi-user
+    path: apps/pipeline/upstream/env/platform-agnostic-minio
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
