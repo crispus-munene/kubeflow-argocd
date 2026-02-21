@@ -13,5 +13,5 @@ metadata:
   name: kubeflow-system
   labels:
     control-plane: kubeflow
-    istio-injection: enabled
+    # istio-injection: enabled
     # pod-security.kubernetes.io/enforce: baseline

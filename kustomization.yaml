@@ -11,17 +11,17 @@ resources:
 # kubeflow
 # - argocd-apps/admission-webhook.yaml
 # - argocd-apps/central-dashboard.yaml
-- argocd-apps/certmanager.yaml
+# - argocd-apps/certmanager.yaml
 # - argocd-apps/dex.yaml
 # - argocd-apps/kfam.yaml
 # - argocd-apps/knative.yaml
 - argocd-apps/kubeflow-ns.yaml
 - argocd-apps/kubeflow-pipelines.yaml
-- argocd-apps/kubeflow-roles.yaml
+# - argocd-apps/kubeflow-roles.yaml
 # - argocd-apps/notebook.yaml
 # - argocd-apps/oauth2-proxy.yaml
-- argocd-apps/user-namespace.yaml
-- argocd-apps/volumes.yaml
+# - argocd-apps/user-namespace.yaml
+# - argocd-apps/volumes.yaml
 
 # - argocd-apps/experimental-pvcviewer-controller.yaml
 # - argocd-apps/experimental-volumes-web-app.yaml
