@@ -7,10 +7,10 @@ resources:
 # - argocd-apps/rook-ceph.yaml
 # - argocd-apps/nginx.yaml
 # - argocd-apps/nvidia-gpu-operator.yaml
-- argocd-apps/istio.yaml
+# - argocd-apps/istio.yaml
 # kubeflow
 # - argocd-apps/admission-webhook.yaml
-- argocd-apps/central-dashboard.yaml
+# - argocd-apps/central-dashboard.yaml
 - argocd-apps/certmanager.yaml
 # - argocd-apps/dex.yaml
 # - argocd-apps/kfam.yaml
