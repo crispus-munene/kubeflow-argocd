@@ -5,7 +5,7 @@ metadata:
   labels:
     control-plane: kubeflow
     istio-injection: enabled
-    pod-security.kubernetes.io/enforce: baseline
+    # pod-security.kubernetes.io/enforce: baseline
 ---
 apiVersion: v1
 kind: Namespace
@@ -14,4 +14,4 @@ metadata:
   labels:
     control-plane: kubeflow
     istio-injection: enabled
-    pod-security.kubernetes.io/enforce: baseline
+    # pod-security.kubernetes.io/enforce: baseline
