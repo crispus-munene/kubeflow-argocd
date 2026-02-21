@@ -19,7 +19,7 @@ resources:
 - argocd-apps/kubeflow-pipelines.yaml
 - argocd-apps/kubeflow-roles.yaml
 - argocd-apps/notebook.yaml
-- argocd-apps/oidc-auth.yaml
+- argocd-apps/oauth2-proxy.yaml
 - argocd-apps/user-namespace.yaml
 - argocd-apps/volumes.yaml
 
