@@ -7,6 +7,7 @@ kind: Kustomization
 # * this separates cluster-scoped resources to its own folder.
 
 resources:
+- cluster-scoped
 - ../../base
 - https://github.com/argoproj/argo-workflows/manifests/namespace-install/workflow-controller-rbac?ref=v3.7.3
 patches:
