@@ -18,7 +18,7 @@ resources:
 - argocd-apps/kubeflow-ns.yaml
 - argocd-apps/kubeflow-pipelines.yaml
 # - argocd-apps/kubeflow-roles.yaml
-# - argocd-apps/notebook.yaml
+- argocd-apps/notebook.yaml
 # - argocd-apps/oauth2-proxy.yaml
 # - argocd-apps/user-namespace.yaml
 # - argocd-apps/volumes.yaml
