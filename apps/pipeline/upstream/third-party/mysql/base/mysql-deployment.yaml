@@ -66,8 +66,8 @@ spec:
           name: mysql-persistent-storage
         resources:
           requests:
-            cpu: 100m
-            memory: 800Mi
+            cpu: 20m
+            memory: 100Mi
       securityContext:
         fsGroup: 999
         fsGroupChangePolicy: OnRootMismatch
