@@ -15,7 +15,7 @@ data:
   dbHost: postgres  # relic to be removed after release
   dbPort: "5432"    # relic to be removed after release
   dbType: postgres  
-  postgresHost: postgres
+  postgresHost: postgres-service
   postgresPort: "5432"
   mlmdDb: metadb
   cacheDb: cachedb
