@@ -8,7 +8,7 @@ resources:
 # - argocd-apps/nginx.yaml
 # - argocd-apps/nvidia-gpu-operator.yaml
 # - argocd-apps/istio.yaml
-- argocd-apps/minio.yaml
+# - argocd-apps/minio.yaml
 
 # kubeflow
 # - argocd-apps/admission-webhook.yaml
