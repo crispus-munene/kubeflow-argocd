@@ -8,6 +8,8 @@ resources:
 # - argocd-apps/nginx.yaml
 # - argocd-apps/nvidia-gpu-operator.yaml
 # - argocd-apps/istio.yaml
+- argocd-apps/minio.yaml
+
 # kubeflow
 # - argocd-apps/admission-webhook.yaml
 # - argocd-apps/central-dashboard.yaml
@@ -25,6 +27,7 @@ resources:
 
 # - argocd-apps/experimental-pvcviewer-controller.yaml
 # - argocd-apps/experimental-volumes-web-app.yaml
+
 # Monitoring and logging
 # - argocd-apps/monitoring-resources.yaml
 # - argocd-apps/kube-prometheus-stack.yaml
